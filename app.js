@@ -3,7 +3,7 @@ const page = document.body.dataset.page;
 const fallbackTdk = {
   title: "在线观看日本电影 - 高清日本电影免费在线观看",
   keywords: "在线观看日本电影,日本电影免费观看,高清日本电影,日本电影在线,日本电影推荐,日本电影大全,日本电影网站",
-  description: "免费在线观看高清日本电影，提供最新日本电影、经典日本电影、日本动画电影在线观看，每日更新日本电影资源，支持手机电脑在线播放。"
+  description: "免费在线观看高清日本电影，提供最新日本电影、经典日本电影、日本动漫电影在线观看，每日更新日本电影资源，支持手机电脑在线播放。"
 };
 
 let items = [];
@@ -40,46 +40,66 @@ async function loadItems() {
   items = await fetch("./items.json", { cache: "no-store" }).then((response) => response.json());
 }
 
+function byKind(kind) {
+  return items.filter((item) => item.kind === kind);
+}
+
+function sortByHot(list) {
+  return [...list].sort((a, b) => b.hot - a.hot);
+}
+
+function sortByScore(list) {
+  return [...list].sort((a, b) => Number(b.score) - Number(a.score));
+}
+
 function card(item) {
   return `<article class="card">
     <a href="./movie.html?id=${encodeURIComponent(item.id)}">
-      <div class="cover">
+      <figure class="cover">
         <img src="${item.poster}" alt="${item.title}" loading="lazy">
-        <span>${item.status || item.kind}</span>
-      </div>
+        <figcaption>${item.kind}</figcaption>
+      </figure>
       <div class="card-body">
+        <p>${item.status || item.genre}</p>
         <h3>${item.title}</h3>
-        <p>${item.originalTitle}</p>
-        <div class="meta"><b>${item.score}</b><span>${item.year}</span><span>${item.kind}</span></div>
+        <span>${item.originalTitle}</span>
+        <div class="meta"><b>${item.score}</b><em>${item.year}</em><em>${item.genre}</em></div>
       </div>
     </a>
   </article>`;
 }
 
-function row(item) {
-  return `<a class="broadcast-row" href="./movie.html?id=${encodeURIComponent(item.id)}">
+function feature(item) {
+  return `<a class="feature-card" href="./movie.html?id=${encodeURIComponent(item.id)}">
     <img src="${item.poster}" alt="${item.title}" loading="lazy">
     <span>
+      <small>${item.kind} / ${item.genre}</small>
       <b>${item.title}</b>
-      <small>${item.kind} / ${item.genre} / ${item.year} / ${item.score}</small>
+      <em>${item.year} / ${item.score}</em>
     </span>
   </a>`;
 }
 
-function renderHome() {
-  const hot = [...items].sort((a, b) => b.hot - a.hot);
-  const lead = hot[0];
-  document.getElementById("heroScreen").innerHTML = `<a href="./movie.html?id=${lead.id}">
-    <img src="${lead.poster}" alt="${lead.title}">
-    <span><small>${lead.status || "热播"} / ${lead.kind}</small><b>${lead.title}</b></span>
+function mini(item, index) {
+  return `<a class="mini-row" href="./movie.html?id=${encodeURIComponent(item.id)}">
+    <i>${String(index + 1).padStart(2, "0")}</i>
+    <span><b>${item.title}</b><small>${item.kind} / ${item.year}</small></span>
+    <strong>${item.score}</strong>
   </a>`;
-  document.getElementById("onAirList").innerHTML = hot.slice(1, 6).map(row).join("");
-  document.getElementById("spotlight").innerHTML = hot.slice(6, 14).map(row).join("");
-  document.getElementById("rankList").innerHTML = [...items]
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 8)
-    .map((item) => `<li><a href="./movie.html?id=${item.id}"><b>${item.title}</b><span>${item.score}</span></a></li>`)
-    .join("");
+}
+
+function renderHome() {
+  const hot = sortByHot(items);
+  const lead = hot[0];
+  document.getElementById("heroLead").innerHTML = `<a href="./movie.html?id=${lead.id}">
+    <img src="${lead.poster}" alt="${lead.title}">
+    <span><small>${lead.kind} / ${lead.genre} / ${lead.year}</small><b>${lead.title}</b></span>
+  </a>`;
+  document.getElementById("heroStack").innerHTML = sortByScore(items).slice(0, 6).map(mini).join("");
+  document.getElementById("movieRail").innerHTML = sortByHot(byKind("日本电影")).slice(0, 12).map(card).join("");
+  document.getElementById("dramaRail").innerHTML = sortByHot(byKind("日剧")).slice(0, 12).map(card).join("");
+  document.getElementById("docRail").innerHTML = sortByHot(byKind("综艺纪录")).slice(0, 8).map(feature).join("");
+  document.getElementById("animeRail").innerHTML = sortByScore(byKind("动漫电影")).slice(0, 10).map(card).join("");
   document.getElementById("homeGrid").innerHTML = hot.slice(0, 36).map(card).join("");
 }
 
@@ -88,7 +108,7 @@ function filteredItems() {
   const sort = params.get("sort") || document.getElementById("sortSelect")?.value || "hot";
   let list = [...items];
   if (kind !== "全部") list = list.filter((item) => item.kind === kind);
-  list.sort((a, b) => sort === "score" ? b.score - a.score : sort === "year" ? b.year - a.year : b.hot - a.hot);
+  list.sort((a, b) => sort === "score" ? Number(b.score) - Number(a.score) : sort === "year" ? b.year - a.year : b.hot - a.hot);
   return { list, kind };
 }
 
@@ -99,30 +119,32 @@ function renderLibrary() {
       location.href = value === "全部" ? "./library.html" : `./library.html?kind=${encodeURIComponent(value)}`;
     };
   });
-
   const sortSelect = document.getElementById("sortSelect");
   sortSelect.value = params.get("sort") || "hot";
   sortSelect.onchange = () => {
     params.set("sort", sortSelect.value);
     location.href = `./library.html?${params.toString()}`;
   };
-
   const { list, kind } = filteredItems();
-  document.getElementById("libraryTitle").textContent = kind === "全部" ? "全部内容" : `${kind}频道`;
+  document.getElementById("libraryTitle").textContent = kind === "全部" ? "全部日本影视内容" : `${kind}频道`;
   document.getElementById("resultCount").textContent = `${list.length} 条`;
   document.getElementById("libraryGrid").innerHTML = list.map(card).join("");
 }
 
 function renderDetail() {
   const item = items.find((entry) => entry.id === params.get("id")) || items[0];
-  applyTdk(fallbackTdk);
+  applyTdk({
+    title: `${item.title} - 日本电影在线高清资料 - 日本电影网站`,
+    keywords: `${item.title},日本电影网,日本电影在线,日本电影官网,日本电影网站,日本电影在线观看`,
+    description: item.summary
+  });
   document.getElementById("detailRoot").innerHTML = `
     <div class="detail-poster"><img src="${item.poster}" alt="${item.title}"></div>
     <div class="detail-copy">
-      <p class="eyebrow">${item.status || "高清"} / ${item.kind}</p>
+      <p class="eyebrow">${item.kind} / ${item.genre}</p>
       <h1>${item.title}</h1>
       <p class="origin">${item.originalTitle}</p>
-      <div class="detail-meta"><span>评分 ${item.score}</span><span>${item.year}</span><span>${item.genre}</span><span>${item.kind}</span></div>
+      <div class="detail-meta"><span>评分 ${item.score}</span><span>${item.year}</span><span>${item.status || "高清"}</span><span>${item.kind}</span></div>
       <p>${item.summary}</p>
       <a class="btn primary" href="./library.html?kind=${encodeURIComponent(item.kind)}">查看同类内容</a>
     </div>`;

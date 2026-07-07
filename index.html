@@ -5,98 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>在线观看日本电影 - 高清日本电影免费在线观看</title>
     <meta name="keywords" content="在线观看日本电影,日本电影免费观看,高清日本电影,日本电影在线,日本电影推荐,日本电影大全,日本电影网站" />
-    <meta name="description" content="免费在线观看高清日本电影，提供最新日本电影、经典日本电影、日本动画电影在线观看，每日更新日本电影资源，支持手机电脑在线播放。" />
+    <meta name="description" content="免费在线观看高清日本电影，提供最新日本电影、经典日本电影、日本动漫电影在线观看，每日更新日本电影资源，支持手机电脑在线播放。" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body data-page="home">
-    <header class="station-head">
-      <a class="brand" href="./index.html"><b>映画电波台</b><span>JP MOVIE BROADCAST</span></a>
+    <header class="site-head">
+      <a class="brand" href="./index.html"><b>日影观测所</b><span>NIHON SCREEN GUIDE</span></a>
       <nav class="nav" aria-label="主导航">
-        <a class="active" href="./index.html">放送首页</a>
-        <a href="./library.html">片库大厅</a>
-        <a href="./library.html?kind=动漫电影">日本电影在线</a>
-        <a href="./library.html?kind=日剧">热播日剧</a>
+        <a class="active" href="./index.html">首页精选</a>
+        <a href="./library.html">全部片库</a>
+        <a href="./library.html?kind=日本电影">日本电影</a>
+        <a href="./library.html?kind=日剧">热门日剧</a>
+        <a href="./library.html?kind=动漫电影">动漫电影</a>
         <a href="./library.html?kind=综艺纪录">综艺纪录</a>
-        <a href="./library.html?sort=score">高分榜</a>
       </nav>
-      <a class="signal" href="./library.html?sort=year">今日更新</a>
+      <a class="head-link" href="./library.html?sort=score">高分榜</a>
     </header>
 
     <main>
       <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">日本电影网 · 日本电影在线 · 日本电影网站</p>
-          <h1>精选日本高分电影与热播剧集，按类型、热度和更新状态整理。</h1>
-          <p>映画电波台面向日本电影官网、日本电影网站、日本与本国电影在线观看用户，整理日本动漫电影、日剧、综艺纪录等高清内容，方便快速发现想看的作品。</p>
+          <p class="eyebrow">日本电影网 / 日本电影在线 / 日本电影网站</p>
+          <h1>日本电影、日剧、动漫电影与综艺纪录一站式整理。</h1>
+          <p>按作品类型、热度、年份和评分建立内容索引，覆盖日本电影官网、日本电影网站、日本与本国电影在线观看常用入口，方便快速找到想看的日影、日剧和纪录节目。</p>
           <div class="hero-actions">
-            <a class="btn primary" href="./library.html">进入片库大厅</a>
-            <a class="btn secondary" href="#now">查看正在热播</a>
+            <a class="btn primary" href="./library.html">进入片库</a>
+            <a class="btn ghost" href="#movie">查看日本电影</a>
           </div>
         </div>
-        <div class="hero-screen" id="heroScreen"></div>
-        <aside class="onair">
-          <p class="eyebrow">On Air</p>
-          <h2>正在热播</h2>
-          <div id="onAirList"></div>
+        <div class="hero-lead" id="heroLead"></div>
+        <aside class="hero-rank">
+          <p class="eyebrow">高分热看</p>
+          <h2>今日推荐榜</h2>
+          <div id="heroStack"></div>
         </aside>
       </section>
 
-      <section class="ticker" aria-label="快捷频道">
-        <a href="./library.html?kind=动漫电影"><b>日本电影在线</b><span>动画长片与高分日影</span></a>
-        <a href="./library.html?kind=日剧"><b>日本电影在线观看</b><span>热播日剧与剧集海报</span></a>
-        <a href="./library.html?kind=综艺纪录"><b>日本电影网站</b><span>综艺、旅行、美食、纪实</span></a>
-        <a href="./library.html?sort=score"><b>日本电影官网</b><span>评分榜与片单索引</span></a>
+      <section class="channel-bar" aria-label="频道入口">
+        <a href="./library.html?kind=日本电影"><b>日本电影在线</b><span>剧情、悬疑、家庭、恐怖</span></a>
+        <a href="./library.html?kind=日剧"><b>日本电影在线观看</b><span>热播日剧与经典剧集</span></a>
+        <a href="./library.html?kind=动漫电影"><b>日本动漫电影</b><span>剧场版与动画长片</span></a>
+        <a href="./library.html?kind=综艺纪录"><b>日本电影网站</b><span>旅行、美食、文化、真人秀</span></a>
       </section>
 
-      <section class="section split" id="now">
-        <div>
-          <div class="section-title">
-            <p class="eyebrow">Channel Pick</p>
-            <h2>频道精选</h2>
-          </div>
-          <div class="broadcast-list" id="spotlight"></div>
+      <section class="section" id="movie">
+        <div class="section-head">
+          <div><p class="eyebrow">Japanese Movies</p><h2>日本电影片单</h2></div>
+          <a href="./library.html?kind=日本电影">更多日本电影</a>
         </div>
-        <aside class="ranking">
-          <p class="eyebrow">Score Board</p>
-          <h2>高分节目表</h2>
-          <ol id="rankList"></ol>
+        <div class="poster-grid focus" id="movieRail"></div>
+      </section>
+
+      <section class="section split">
+        <div>
+          <div class="section-head">
+            <div><p class="eyebrow">Drama</p><h2>日剧热播区</h2></div>
+            <a href="./library.html?kind=日剧">全部日剧</a>
+          </div>
+          <div class="poster-grid" id="dramaRail"></div>
+        </div>
+        <aside class="feature-panel">
+          <div class="section-head tight">
+            <div><p class="eyebrow">Documentary & Show</p><h2>综艺纪录</h2></div>
+            <a href="./library.html?kind=综艺纪录">全部</a>
+          </div>
+          <div id="docRail"></div>
         </aside>
       </section>
 
       <section class="section">
         <div class="section-head">
-          <div>
-            <p class="eyebrow">Movie Wall</p>
-            <h2>首页精选 36 部</h2>
-          </div>
+          <div><p class="eyebrow">Anime Movie</p><h2>动漫电影精选</h2></div>
+          <a href="./library.html?kind=动漫电影">更多动漫电影</a>
+        </div>
+        <div class="poster-grid" id="animeRail"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div><p class="eyebrow">All Picks</p><h2>首页精选 36 部</h2></div>
           <a href="./library.html">打开 90+ 片库</a>
         </div>
-        <div class="poster-grid" id="homeGrid"></div>
+        <div class="poster-grid compact" id="homeGrid"></div>
       </section>
     </main>
 
     <footer class="footer">
       <div>
-        <b>映画电波台</b>
-        <p>为日本电影网、日本电影在线、日本电影官网、日本电影网站与日本与本国电影在线观看用户整理高清片单和内容索引。</p>
+        <b>日影观测所</b>
+        <p>面向日本电影网、日本电影在线、日本电影官网、日本电影网站与日本与本国电影在线观看用户，整理作品海报、评分、年份、类型和内容索引。</p>
       </div>
-      <div>
-        <h3>内容索引</h3>
-        <a href="./library.html?kind=动漫电影">动漫电影</a>
-        <a href="./library.html?kind=日剧">热播日剧</a>
-        <a href="./library.html?kind=综艺纪录">综艺纪录</a>
-      </div>
-      <div>
-        <h3>观影指南</h3>
-        <a href="./library.html?sort=score">高分榜单</a>
-        <a href="./library.html?sort=year">更新排序</a>
-        <a href="./library.html">全部内容</a>
-      </div>
-      <div>
-        <h3>版权声明</h3>
-        <p>Copyright © 2026 映画电波台. All Rights Reserved.</p>
-        <p>页面展示影视资料、海报、评分和内容索引信息，便于用户查找观影参考。</p>
-      </div>
+      <div><h3>内容索引</h3><a href="./library.html?kind=日本电影">日本电影</a><a href="./library.html?kind=日剧">热门日剧</a><a href="./library.html?kind=动漫电影">动漫电影</a></div>
+      <div><h3>观影指南</h3><a href="./library.html?sort=score">高分榜单</a><a href="./library.html?sort=year">最新年份</a><a href="./library.html?kind=综艺纪录">综艺纪录</a></div>
+      <div><h3>版权声明</h3><p>Copyright © 2026 日影观测所. All Rights Reserved.</p><p>页面用于影视资料索引和观影信息展示。</p></div>
     </footer>
     <script src="./app.js"></script>
   </body>
